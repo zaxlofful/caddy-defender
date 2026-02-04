@@ -1,0 +1,12 @@
+displayName: Traefik Defender
+type: middleware
+
+import: pkg.jsn.cam/caddy-defender/traefik-defender
+
+summary: IP-based request filtering and manipulation middleware to protect against AI scrapers and unwanted traffic
+
+testData:
+  IPRanges:
+    - openai
+    - aws
+  Responder: block
