@@ -1,4 +1,4 @@
-package traefik_defender
+package traefikdefender
 
 import (
 	"context"

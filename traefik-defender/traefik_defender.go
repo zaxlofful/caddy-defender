@@ -1,7 +1,7 @@
-// Package traefik_defender implements a Traefik middleware plugin that blocks or manipulates
+// Package traefikdefender implements a Traefik middleware plugin that blocks or manipulates
 // requests based on the client's IP address, particularly useful for preventing unwanted
 // AI scraping traffic or polluting AI training data.
-package traefik_defender
+package traefikdefender
 
 import (
 	"context"
