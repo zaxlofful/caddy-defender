@@ -1,6 +1,10 @@
-## **Caddy Defender Plugin**
+## **Defender Plugin for Caddy and Traefik**
 
-The **Caddy Defender** plugin is a middleware for Caddy that allows you to block or manipulate requests based on the client's IP address. It is particularly useful for preventing unwanted traffic or polluting AI training data by returning garbage responses.
+The **Defender** plugin is a middleware for Caddy and Traefik that allows you to block or manipulate requests based on the client's IP address. It is particularly useful for preventing unwanted traffic or polluting AI training data by returning garbage responses.
+
+**Available for:**
+- **Caddy** - Full-featured middleware with Caddyfile configuration
+- **Traefik** - Plugin with YAML configuration (see [traefik-defender/README.md](traefik-defender/README.md))
 
 ---
 
@@ -22,7 +26,9 @@ The **Caddy Defender** plugin is a middleware for Caddy that allows you to block
 
 ## **Installation**
 
-### **Using Docker**
+### **Caddy**
+
+#### **Using Docker**
 
 The easiest way to use the Caddy Defender plugin is by using the pre-built Docker image.
 
@@ -46,6 +52,10 @@ The easiest way to use the Caddy Defender plugin is by using the pre-built Docke
    Replace `/path/to/Caddyfile` with the path to your `Caddyfile`.
 
 Please see the [online documentation](https://JasonLovesDoggo.github.io/caddy-defender/installation/) for other methods of installation.
+
+### **Traefik**
+
+For Traefik installation and configuration, see the [Traefik Defender README](traefik-defender/README.md).
 
 ---
 

@@ -1,0 +1,24 @@
+# Traefik static configuration
+# Save as traefik.yml
+
+api:
+  insecure: true
+  dashboard: true
+
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+# Enable the Traefik Defender plugin
+experimental:
+  plugins:
+    traefik-defender:
+      moduleName: pkg.jsn.cam/caddy-defender/traefik-defender
+      version: v0.1.0

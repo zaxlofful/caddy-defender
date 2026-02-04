@@ -1,0 +1,53 @@
+# Traefik dynamic configuration
+# Save as dynamic-config.yml
+
+http:
+  middlewares:
+    # Block AI services with default settings
+    defender-block:
+      plugin:
+        traefik-defender:
+          ipRanges:
+            - openai
+            - deepseek
+            - githubcopilot
+            - aws
+            - gcloud
+          responder: block
+
+    # Custom message for AI services
+    defender-custom:
+      plugin:
+        traefik-defender:
+          ipRanges:
+            - openai
+            - deepseek
+          responder: custom
+          message: "AI scraping is not permitted. Please contact us if you believe this is an error."
+          statusCode: 403
+
+    # Tarpit - slow response to waste bot resources
+    defender-tarpit:
+      plugin:
+        traefik-defender:
+          ipRanges:
+            - openai
+            - deepseek
+          responder: tarpit
+          tarpitConfig:
+            timeout: "60s"
+            bytesPerSecond: 10
+            responseCode: 200
+
+  routers:
+    example-router:
+      rule: "Host(`example.local`)"
+      service: example-service
+      middlewares:
+        - defender-block
+
+  services:
+    example-service:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:8080"

@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  traefik:
+    image: traefik:latest
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--entrypoints.web.address=:80"
+      - "--experimental.plugins.traefik-defender.modulename=pkg.jsn.cam/caddy-defender/traefik-defender"
+      - "--experimental.plugins.traefik-defender.version=v0.1.0"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./dynamic-config.yml:/etc/traefik/dynamic/config.yml:ro
+    labels:
+      - "traefik.enable=false"
+
+  # Example web application
+  whoami:
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.whoami.middlewares=defender@docker"
+      # Configure defender middleware inline
+      - "traefik.http.middlewares.defender.plugin.traefik-defender.ipRanges=openai,deepseek,githubcopilot"
+      - "traefik.http.middlewares.defender.plugin.traefik-defender.responder=block"
+
+  # Another example with custom response
+  web-app:
+    image: nginx:alpine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.webapp.rule=Host(`app.localhost`)"
+      - "traefik.http.routers.webapp.entrypoints=web"
+      - "traefik.http.routers.webapp.middlewares=defender-custom@docker"
+      - "traefik.http.middlewares.defender-custom.plugin.traefik-defender.ipRanges=openai,deepseek"
+      - "traefik.http.middlewares.defender-custom.plugin.traefik-defender.responder=custom"
+      - "traefik.http.middlewares.defender-custom.plugin.traefik-defender.message=AI scraping not allowed"
+      - "traefik.http.middlewares.defender-custom.plugin.traefik-defender.statusCode=403"
